@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtExpRisco/v_S_01_01_00">
+    <evtExpRisco id="ID1{{ funcionario.cpf }}{{ "now"|date:"YmdHis" }}">
+        <ideEvento>
+            <tpAmb>1</tpAmb> <procEmi>1</procEmi> <verProc>SafeCore v1.0</verProc>
+        </ideEvento>
+        <ideEmpregador>
+            <tpInsc>1</tpInsc> <nrInsc>{{ funcionario.empresa.cnpj|slice:":8" }}</nrInsc>
+        </ideEmpregador>
+        <ideVinculo>
+            <cpfTrab>{{ funcionario.cpf }}</cpfTrab>
+            </ideVinculo>
+        <infoExpRisco>
+            <dtIniCondicao>{{ funcionario.data_admissao|date:"Y-m-d" }}</dtIniCondicao>
+            {% for exposicao in exposicoes %}
+            <infoAmb>
+                <codAmb>{{ exposicao.ambiente.id }}</codAmb> <dscAmb>{{ exposicao.ambiente.nome }}</dscAmb>
+            </infoAmb>
+
+            <agNoc>
+                <codAgNoc>{{ exposicao.risco.codigo_esocial }}</codAgNoc>
+                {% if exposicao.intensidade %}
+                <intConc>{{ exposicao.intensidade }}</intConc>
+                <tecMedicao>{{ exposicao.tecnica_utilizada }}</tecMedicao>
+                {% endif %}
+                </agNoc>
+            {% endfor %}
+        </infoExpRisco>
+    </evtExpRisco>
+</eSocial>

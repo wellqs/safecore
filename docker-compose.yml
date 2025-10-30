@@ -1,0 +1,31 @@
+services:
+  # Serviço da aplicação web (Django)
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      # AQUI ESTÁ A MUDANÇA: Mapeia a porta 8001 da sua máquina para a 8000 do container.
+      - "8001:8000"
+    environment:
+      - DB_NAME=safecore_db
+      - DB_USER=safecore_user
+      - DB_PASSWORD=segredo
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+
+  # Serviço do banco de dados (PostgreSQL)
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=safecore_db
+      - POSTGRES_USER=safecore_user
+      - POSTGRES_PASSWORD=segredo
+
+volumes:
+  postgres_data:

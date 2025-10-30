@@ -1,0 +1,5 @@
+# Django Framework
+django==4.2.7
+
+# PostgreSQL Driver
+psycopg2-binary==2.9.9

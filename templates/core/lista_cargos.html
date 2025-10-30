@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Cargos e Funções - SafeCore SST{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Gestão de Cargos e Funções</h1>
+
+    <a href="{% url 'core:cargo_create' %}" class="btn btn-add">+ Novo Cargo</a>
+</header>
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Nome do Cargo</th>
+                <th>Descrição das Atividades</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# Fazemos um loop na lista 'todos_os_cargos' que a view nos enviou #}
+            {% for cargo in todos_os_cargos %}
+            <tr>
+                <td>{{ cargo.nome }}</td>
+                {# O filtro 'truncatewords:20' limita a descrição a 20 palavras para não quebrar a tabela #}
+                <td>{{ cargo.descricao|truncatewords:20|default:"-" }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'core:cargo_update' pk=cargo.pk %}" class="btn btn-edit">Editar</a>
+                        <a href="{% url 'core:cargo_delete' pk=cargo.pk %}" class="btn btn-delete">Excluir</a>
+                    </div>
+                </td>
+
+            </tr>
+            {% empty %}
+            {# Esta parte é exibida se a lista de cargos estiver vazia #}
+            <tr>
+                <td colspan="3" style="text-align: center; padding: 20px;">Nenhum cargo cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

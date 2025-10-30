@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ page_title }} - SafeCore SST{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); max-width: 700px; margin: 0 auto; }
+    .form-container h1 { margin-top: 0; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    .btn { padding: 10px 20px; border: none; border-radius: 4px; color: white; cursor: pointer; text-decoration: none; font-size: 16px; }
+    .btn-primary { background-color: #3498db; }
+    .btn-secondary { background-color: #7f8c8d; }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h1>{{ page_title }}</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: red; font-size: 12px;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'core:listar_funcionarios' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

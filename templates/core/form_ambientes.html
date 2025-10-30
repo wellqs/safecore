@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ page_title }} - SafeCore SST{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ page_title }}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: red; font-size: 12px; margin-top: 5px;">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            
+            <a href="{% url 'core:listar_ambientes' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Estilos para o container do formulário e botões de ação */
+    .form-container { 
+        background-color: #fff; 
+        padding: 30px; 
+        border-radius: 8px; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        max-width: 800px; 
+        margin: 20px auto; 
+    }
+    .form-container h1 { 
+        margin-top: 0; 
+        margin-bottom: 25px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+    .form-group { 
+        margin-bottom: 20px; 
+    }
+    .form-group label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-weight: bold; 
+        color: #555;
+    }
+    .form-actions {
+        margin-top: 30px;
+        text-align: right;
+    }
+    .btn { 
+        padding: 10px 20px; 
+        border: none; 
+        border-radius: 4px; 
+        color: white; 
+        cursor: pointer; 
+        text-decoration: none; 
+        font-size: 16px; 
+        margin-left: 10px;
+    }
+    .btn-primary { background-color: #3498db; }
+    .btn-secondary { background-color: #7f8c8d; }
+</style>
+{% endblock %}

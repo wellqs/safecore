@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Ambientes de Trabalho - SafeCore SST{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Gestão de Ambientes de Trabalho (PGR)</h1>
+    <a href="{% url 'core:ambiente_create' %}" class="btn btn-add">+ Novo Ambiente</a>
+</header>
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Nome do Ambiente</th>
+                <th>Empresa</th>
+                <th>Descrição</th>      {# <-- RE-ADICIONEI ESTA COLUNA #}
+                <th>Ações</th>
+                <th>PGR</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ambiente in todos_os_ambientes %}
+            <tr>
+                <td>{{ ambiente.nome }}</td>
+                <td>{{ ambiente.empresa.razao_social }}</td>
+                <td>{{ ambiente.descricao|default:"-" }}</td> {# <-- CAMPO CORRESPONDENTE #}
+                <td>
+                    <div class="action-buttons">
+                        <a href="#" class="btn btn-edit">Editar</a>
+                        <a href="#" class="btn btn-delete">Excluir</a>
+                    </div>
+                </td>
+                <td>
+                    <a href="#" class="btn btn-pgr">Gerenciar Riscos</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                {# <-- AJUSTE DO COLSPAN DE 5 PARA 5 PARA ALINHAR CORRETAMENTE #}
+                <td colspan="5" style="text-align: center; padding: 20px;">Nenhum ambiente de trabalho cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

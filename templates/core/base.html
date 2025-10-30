@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SafeCore SST{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Safe<span>Core</span></h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'core:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+
+                <li><a href="{% url 'core:listar_funcionarios' %}" class="{% if 'funcionario' in request.resolver_match.url_name %}active{% endif %}">Gestão de Funcionários</a></li>
+
+                <li><a href="{% url 'core:listar_ambientes' %}" class="{% if 'ambiente' in request.resolver_match.url_name %}active{% endif %}">Ambientes de Trabalho</a></li>
+
+                <li><a href="{% url 'core:listar_cargos' %}" class="{% if 'cargo' in request.resolver_match.url_name %}active{% endif %}">Cargos e Funções</a></li>
+
+                <li><a href="{% url 'core:gerenciamento_ges' %}" class="{% if 'ges' in request.resolver_match.url_name %}active{% endif %}">Gerenciar GES</a></li>
+
+                <li><a href="#">Saúde Ocupacional</a></li>
+                <li><a href="#">Relatórios</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <p>&copy; {% now "Y" %} SafeCore</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

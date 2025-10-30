@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Gerenciamento de GES - SafeCore SST{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Gerenciamento de Exposições por Grupo (GES)</h1>
+</header>
+
+{# --- SEÇÃO 1: Formulário de Seleção do GES --- #}
+<div class="form-container" style="max-width: none; margin-bottom: 30px;">
+    <form method="get" class="filter-form">
+        <div class="form-group">
+            <label for="cargo_id">Selecione o Cargo</label>
+            <select name="cargo_id" id="cargo_id" class="form-control">
+                <option value="">---------</option>
+                {% for cargo in todos_os_cargos %}
+                    <option value="{{ cargo.pk }}" {% if cargo.pk == selected_cargo_id %}selected{% endif %}>
+                        {{ cargo.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ambiente_id">Selecione o Ambiente</label>
+            <select name="ambiente_id" id="ambiente_id" class="form-control">
+                <option value="">---------</option>
+                {% for ambiente in todos_os_ambientes %}
+                    <option value="{{ ambiente.pk }}" {% if ambiente.pk == selected_ambiente_id %}selected{% endif %}>
+                        {{ ambiente.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar GES</button>
+    </form>
+</div>
+
+{# --- SEÇÃO 2: Gerenciamento dos Riscos (só aparece se um GES for selecionado) --- #}
+{% if selected_cargo and selected_ambiente %}
+<div class="table-container">
+    <h2 style="margin-top: 0;">Riscos para o GES: <strong>{{ selected_cargo.nome }}</strong> em <strong>{{ selected_ambiente.nome }}</strong></h2>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Cód. eSocial</th>
+                <th>Risco</th>
+                <th>Tipo</th>
+                <th>Intensidade</th>
+                <th>Técnica de Medição</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exposicao in exposicoes_do_ges %}
+            <tr>
+                <td>{{ exposicao.risco.codigo_esocial }}</td>
+                <td>{{ exposicao.risco.nome }}</td>
+                <td>{{ exposicao.risco.get_tipo_display }}</td>
+                <td>{{ exposicao.intensidade|default:"-" }}</td>
+                <td>{{ exposicao.tecnica_utilizada|default:"-" }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="#" class="btn btn-edit">Editar</a>
+                        <a href="{% url 'core:exposicao_risco_delete' pk=exposicao.pk %}" class="btn btn-delete">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 20px;">
+                    Nenhum risco cadastrado para este GES. Use o formulário abaixo para adicionar.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr style="margin: 30px 0;">
+
+    <h3>Adicionar Novo Risco ao GES</h3>
+    <form method="post" class="add-risk-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.risco.label_tag }}
+            {{ form.risco }}
+        </div>
+        <div class="form-group-inline">
+            <div class="form-group">
+                {{ form.intensidade.label_tag }}
+                {{ form.intensidade }}
+            </div>
+            <div class="form-group">
+                {{ form.tecnica_utilizada.label_tag }}
+                {{ form.tecnica_utilizada }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-add" style="margin-top: 10px;">+ Adicionar Risco</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filter-form {
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+    }
+    .filter-form .form-group {
+        flex-grow: 1;
+        margin-bottom: 0;
+    }
+    .filter-form .btn {
+        flex-shrink: 0;
+        height: 45px; /* Alinha com a altura dos selects */
+    }
+    .add-risk-form .form-group-inline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+</style>
+{% endblock %}

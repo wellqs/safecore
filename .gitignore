@@ -1,0 +1,17 @@
+# Arquivos de Ambiente (CRÍTICO!)
+# NUNCA envie suas senhas e chaves secretas
+.env
+
+# Dados do Banco de Dados (CRÍTICO!)
+# Isso impede que o backup do seu banco de dados seja enviado
+postgres_data/
+
+# Arquivos do Python
+__pycache__/
+*.pyc
+
+# Arquivos de IDE (PyCharm)
+.idea/
+
+# Arquivos de SO (macOS)
+.DS_Store

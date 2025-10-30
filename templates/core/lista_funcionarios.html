@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Funcionários - SafeCore SST{% endblock %}
+
+{% block extra_css %}
+<style>
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    header h1 { margin: 0; font-size: 28px; font-weight: 600; }
+    
+    .table-container { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .styled-table { width: 100%; border-collapse: collapse; }
+    .styled-table thead tr { background-color: #2c3e50; color: #ffffff; text-align: left; }
+    .styled-table th, .styled-table td { padding: 12px 15px; vertical-align: middle; }
+    .styled-table tbody tr { border-bottom: 1px solid #dddddd; }
+    .styled-table tbody tr:nth-of-type(even) { background-color: #f3f3f3; }
+    .styled-table tbody tr:last-of-type { border-bottom: 2px solid #2c3e50; }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 5px;
+        border: none;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        margin: 0;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .btn-xml { background-color: #27ae60; }
+    .btn-xml:hover { background-color: #219150; }
+
+    .btn-add { background-color: #3498db; padding: 10px 16px; }
+    .btn-add:hover { background-color: #2980b9; }
+
+    .btn-edit { background-color: #f39c12; }
+    .btn-edit:hover { background-color: #e67e22; }
+
+    .btn-delete { background-color: #e74c3c; }
+    .btn-delete:hover { background-color: #c0392b; }
+
+    .action-buttons { display: flex; gap: 8px; align-items: center; }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+    <header>
+        <h1>Gestão de Funcionários</h1>
+        <a href="{% url 'core:funcionario_create' %}" class="btn btn-add">+ Novo Funcionário</a>
+    </header>
+
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Nome Completo</th>
+                    <th>CPF</th>
+                    <th>Empresa</th>
+                    <th>Cargo</th>
+                    <th>Ações</th>
+                    <th>eSocial</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for funcionario in todos_os_funcionarios %}
+                <tr>
+                    <td>{{ funcionario.nome_completo }}</td>
+                    <td>{{ funcionario.cpf }}</td>
+                    <td>{{ funcionario.empresa.razao_social }}</td>
+                    <td>{{ funcionario.cargo.nome }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'core:funcionario_update' pk=funcionario.pk %}" class="btn btn-edit">
+                                Editar
+                            </a>
+                            <a href="{% url 'core:funcionario_delete' pk=funcionario.pk %}" class="btn btn-delete">
+                                Excluir
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="{% url 'core:gerar_xml_s2240' pk=funcionario.pk %}" class="btn btn-xml">
+                            S-2240
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">Nenhum funcionário cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
