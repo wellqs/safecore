@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+{% block title %}Relatórios{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="mb-0">Relatórios</h1>
+  <div class="d-flex gap-2">
+    <a class="btn" href="{% url 'relatorios:seguranca_novo' %}"><i class="bi bi-shield-check"></i> Novo (Segurança)</a>
+    <a class="btn" href="{% url 'relatorios:saude_novo' %}"><i class="bi bi-heart-pulse"></i> Novo (Saúde)</a>
+  </div>
+  </div>
+
+<div class="mb-3 d-flex gap-2 flex-wrap">
+  <a class="btn btn-outline-secondary" href="{% url 'relatorios:seguranca_lista' %}"><i class="bi bi-shield"></i> Relatórios de Segurança</a>
+  <a class="btn btn-outline-secondary" href="{% url 'relatorios:saude_lista' %}"><i class="bi bi-heart"></i> Relatórios de Saúde</a>
+  </div>
+{% endblock %}
+

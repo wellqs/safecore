@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block title %}Entregas de EPI{% endblock %}
+{% block content %}
+<h1>Entregas de EPI</h1>
+<div class="mb-3 d-flex gap-2 flex-wrap">
+  <a class="btn" href="{% url 'admin:epis_entregaepi_add' %}">Registrar Entrega</a>
+  <a class="btn" href="{% url 'epis:catalogo' %}">Catálogo</a>
+  <a class="btn" href="{% url 'epis:requisitos' %}">Requisitos</a>
+</div>
+<table class="table table-striped table-hover align-middle">
+  <tr><th>Vínculo</th><th>EPI</th><th>Qtd.</th><th>Entregue em</th><th>Aceite</th></tr>
+  {% for obj in object_list %}
+    <tr>
+      <td>{{ obj.vinculo }}</td>
+      <td>{{ obj.epi }}</td>
+      <td>{{ obj.quantidade }}</td>
+      <td>{{ obj.entregue_em|date:'d/m/Y' }}</td>
+      <td>{{ obj.aceite_digital|yesno:'Sim,Não' }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">Nenhum registro.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

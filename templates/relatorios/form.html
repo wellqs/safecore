@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ categoria_nome }} - Formulário{% endblock %}
+{% block content %}
+<h1>{{ categoria_nome }}</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-8">
+      <label class="form-label">Título</label>
+      {{ form.titulo }}
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Data</label>
+      {{ form.data }}
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header fw-bold">Atividades</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead><tr><th>Atividade</th><th style="width:160px">Contador</th></tr></thead>
+          <tbody>
+          {% for f in formset.forms %}
+            <tr>
+              <td>{{ f.instance.nome }}</td>
+              <td>{{ f.contador }}</td>
+            </tr>
+          {% empty %}
+            {% comment %} Quando criando, o formset inicialmente vem vazio; mostramos uma prévia das atividades padrão após salvar o cabeçalho. {% endcomment %}
+            <tr><td colspan="2">As atividades serão exibidas após salvar os dados básicos do relatório.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Observação</label>
+    {{ form.observacao }}
+  </div>
+
+  {{ formset.management_form }}
+
+  <div class="d-flex gap-2">
+    <button class="btn" type="submit"><i class="bi bi-check2-circle"></i> Salvar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'relatorios:lista' relatorio.categoria %}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
+

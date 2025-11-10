@@ -12,6 +12,13 @@ from django.http import HttpResponse
 from django.template import loader
 
 from .models import Funcionario, ExposicaoRisco, Empresa, Aso, AmbienteDeTrabalho, Cargo, Risco
+from hr.models import Colaborador
+from pgr.models import Exposicao as PgrExposicao, MapaExposicao
+from epis.models import EPI, EntregaEPI
+from treinamentos.models import Matricula
+from inspecoes.models import Inspecao, NaoConformidade
+from incidentes.models import Incidente
+from notificacoes.models import Notificacao
 from .forms import FuncionarioForm, AmbienteDeTrabalhoForm, CargoForm, ExposicaoRiscoForm
 
 
@@ -26,10 +33,29 @@ def dashboard_view(request):
     ).count()
     funcionarios_total_count = Funcionario.objects.count()
     empresas_total_count = Empresa.objects.count()
+    # KPIs adicionais (novos apps)
+    incidentes_30d = Incidente.objects.filter(data__gte=timezone.now() - timedelta(days=30)).count()
+    inspecoes_pendentes = Inspecao.objects.filter(status=Inspecao.Status.ABERTA).count()
+    treinamentos_vencendo = Matricula.objects.filter(validade_ate__gte=today, validade_ate__lte=thirty_days_from_now).count()
+    epis_ca_vencendo = EPI.objects.filter(validade_ca__isnull=False, validade_ca__gte=today, validade_ca__lte=thirty_days_from_now).count()
+    entregas_sem_aceite = EntregaEPI.objects.filter(aceite_digital=False).count()
+    mapas_exposicao = MapaExposicao.objects.count()
+    notificacoes_nao_lidas = Notificacao.objects.filter(lida=False).count()
+    colaboradores_total = Colaborador.objects.count()
+
     context = {
         'asos_a_vencer_count': asos_a_vencer_count,
         'funcionarios_total_count': funcionarios_total_count,
         'empresas_total_count': empresas_total_count,
+        # novos KPIs
+        'incidentes_30d': incidentes_30d,
+        'inspecoes_pendentes': inspecoes_pendentes,
+        'treinamentos_vencendo': treinamentos_vencendo,
+        'epis_ca_vencendo': epis_ca_vencendo,
+        'entregas_sem_aceite': entregas_sem_aceite,
+        'mapas_exposicao': mapas_exposicao,
+        'notificacoes_nao_lidas': notificacoes_nao_lidas,
+        'colaboradores_total': colaboradores_total,
     }
     return render(request, 'core/dashboard.html', context)
 

@@ -21,6 +21,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'org',
+    'hr',
+    'pgr',
+    'epis',
+    'treinamentos',
+    'inspecoes',
+    'incidentes',
+    'notificacoes',
+    'relatorios',
 ]
 
 MIDDLEWARE = [
@@ -98,3 +107,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'core:login'
 LOGIN_REDIRECT_URL = 'core:dashboard'
 LOGOUT_REDIRECT_URL = 'core:login'
+
+# Arquivos de mídia (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

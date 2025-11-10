@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% block title %}Mapas de Exposição{% endblock %}
+{% block content %}
+<h1>Mapas de Exposição</h1>
+<div class="mb-3 d-flex gap-2 flex-wrap">
+  <a class="btn" href="{% url 'admin:pgr_mapaexposicao_add' %}">Adicionar Mapa</a>
+  <a class="btn" href="{% url 'pgr:riscos' %}">Riscos</a>
+  <a class="btn" href="{% url 'pgr:relatorio_pdf' %}" target="_blank">Exportar Relatório (PDF)</a>
+</div>
+<table class="table table-striped table-hover align-middle">
+  <tr><th>Função</th><th>Ambiente</th><th>Risco</th><th>Intensidade</th></tr>
+  {% for obj in object_list %}
+    <tr>
+      <td>{{ obj.funcao }}</td>
+      <td>{{ obj.ambiente }}</td>
+      <td>{{ obj.risco }}</td>
+      <td>{{ obj.intensidade|default:'-' }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">Nenhum registro.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

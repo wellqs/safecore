@@ -1,7 +1,9 @@
 services:
   # Serviço da aplicação web (Django)
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
@@ -22,6 +24,8 @@ services:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=safecore_db
       - POSTGRES_USER=safecore_user

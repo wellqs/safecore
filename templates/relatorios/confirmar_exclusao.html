@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% block title %}Excluir Relatório{% endblock %}
+{% block content %}
+<h1>Excluir Relatório</h1>
+<p>Tem certeza que deseja excluir <strong>{{ object }}</strong>?</p>
+<form method="post">{% csrf_token %}
+  <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Excluir</button>
+  <a class="btn btn-outline-secondary" href="javascript:history.back()">Cancelar</a>
+</form>
+{% endblock %}
+

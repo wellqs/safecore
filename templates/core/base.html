@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SafeCore SST{% endblock %}</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-
     <aside class="sidebar">
         <div class="logo">
             <h2>Safe<span>Core</span></h2>
@@ -19,18 +20,21 @@
         <nav>
             <ul>
                 <li><a href="{% url 'core:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
-
-                <li><a href="{% url 'core:listar_funcionarios' %}" class="{% if 'funcionario' in request.resolver_match.url_name %}active{% endif %}">Gestão de Funcionários</a></li>
-
-                <li><a href="{% url 'core:listar_ambientes' %}" class="{% if 'ambiente' in request.resolver_match.url_name %}active{% endif %}">Ambientes de Trabalho</a></li>
-
-                <li><a href="{% url 'core:listar_cargos' %}" class="{% if 'cargo' in request.resolver_match.url_name %}active{% endif %}">Cargos e Funções</a></li>
-
-                <li><a href="{% url 'core:gerenciamento_ges' %}" class="{% if 'ges' in request.resolver_match.url_name %}active{% endif %}">Gerenciar GES</a></li>
-
-                <li><a href="#">Saúde Ocupacional</a></li>
-                <li><a href="#">Relatórios</a></li>
-                <li><a href="#">Configurações</a></li>
+                <li><a href="{% url 'core:listar_funcionarios' %}">Gestao de Funcionarios</a></li>
+                <li><a href="{% url 'core:listar_ambientes' %}">Ambientes de Trabalho</a></li>
+                <li><a href="{% url 'core:listar_cargos' %}">Cargos e Funcoes</a></li>
+                <li><a href="{% url 'core:gerenciamento_ges' %}">Gerenciar GES</a></li>
+                <li><a href="#">Saude Ocupacional</a></li>
+                <li><a href="{% url 'relatorios:home' %}">Relatorios</a></li>
+                <li><a href="#">Configuracoes</a></li>
+                <li><a href="{% url 'org:empresas' %}">Organizacional</a></li>
+                <li><a href="{% url 'hr:colaboradores' %}">RH</a></li>
+                <li><a href="{% url 'pgr:riscos' %}">PGR</a></li>
+                <li><a href="{% url 'epis:catalogo' %}">EPIs</a></li>
+                <li><a href="{% url 'treinamentos:treinamentos' %}">Treinamentos</a></li>
+                <li><a href="{% url 'inspecoes:checklists' %}">Inspecoes</a></li>
+                <li><a href="{% url 'incidentes:incidentes' %}">Incidentes</a></li>
+                <li><a href="{% url 'notificacoes:lista' %}">Notificacoes</a></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
@@ -39,21 +43,19 @@
     </aside>
 
     <main class="main-content">
-
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
                 {% endfor %}
             </div>
         {% endif %}
-
-        {% block content %}
-        {% endblock %}
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -4,79 +4,98 @@
 
 {% block extra_css %}
 <style>
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    header h1 { margin: 0; font-size: 28px; font-weight: 600; }
-    .user-profile { display: flex; align-items: center; }
-    .user-profile span { margin-right: 15px; }
-    .user-profile a { color: #e74c3c; text-decoration: none; font-size: 14px; }
-    
-    .kpi-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .card { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #3498db; }
-    .card.alert { border-color: #e67e22; }
-    .card.danger { border-color: #e74c3c; }
-    .card.success { border-color: #2ecc71; }
-    .card h3 { margin: 0 0 10px 0; font-size: 16px; color: #7f8c8d; text-transform: uppercase; }
-    .card .value { font-size: 36px; font-weight: 700; }
-    
-    .dashboard-widgets { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-    .widget { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .widget h2 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; }
-    .widget .chart-placeholder { height: 250px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 5px; }
-    .widget ul { list-style: none; padding: 0; margin: 0; }
-    .widget ul li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; }
-    .widget ul li:last-child { border-bottom: none; }
-    .widget ul li .status { font-weight: bold; }
-    .widget ul li .status.pending { color: #e67e22; }
-    .widget ul li .status.done { color: #2ecc71; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  header h1 { margin: 0; font-size: 28px; font-weight: 600; }
+  .user-profile { display: flex; align-items: center; }
+  .user-profile span { margin-right: 15px; }
+  .user-profile a { color: #e74c3c; text-decoration: none; font-size: 14px; }
+  .kpi-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+  .card { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #3498db; }
+  .card.alert { border-color: #e67e22; }
+  .card.danger { border-color: #e74c3c; }
+  .card.success { border-color: #2ecc71; }
+  .card h3 { margin: 0 0 10px 0; font-size: 16px; color: #7f8c8d; text-transform: uppercase; }
+  .card .value { font-size: 36px; font-weight: 700; }
+  .dashboard-widgets { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+  .widget { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+  .widget h2 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; }
+  .widget .chart-placeholder { height: 250px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 5px; }
+  .widget ul { list-style: none; padding: 0; margin: 0; }
+  .widget ul li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; }
+  .widget ul li:last-child { border-bottom: none; }
+  .widget ul li .status { font-weight: bold; }
+  .widget ul li .status.pending { color: #e67e22; }
+  .widget ul li .status.done { color: #2ecc71; }
 </style>
 {% endblock %}
 
-
 {% block content %}
-    <header>
-        <h1>Dashboard</h1>
-        <div class="user-profile">
-            {% if user.is_authenticated %}
-                <span>Bem-vindo(a), {{ user.first_name|default:user.username }}</span>
-                <a href="{% url 'admin:logout' %}">Sair</a>
-            {% else %}
-                <span>Bem-vindo(a), Visitante</span>
-                <a href="{% url 'admin:login' %}">Entrar</a>
-            {% endif %}
-        </div>
-    </header>
+  <header>
+    <h1>Dashboard</h1>
+    <div class="user-profile">
+      {% if user.is_authenticated %}
+        <span>Bem-vindo(a), {{ user.first_name|default:user.username }}</span>
+        <a href="{% url 'admin:logout' %}">Sair</a>
+      {% else %}
+        <span>Bem-vindo(a), Visitante</span>
+        <a href="{% url 'admin:login' %}">Entrar</a>
+      {% endif %}
+    </div>
+  </header>
 
-    <section class="kpi-cards">
-        <div class="card alert">
-            <h3>ASOs a Vencer (30 dias)</h3>
-            <p class="value">{{ asos_a_vencer_count }}</p>
-        </div>
-        <div class="card danger">
-            <h3>Treinamentos Vencidos</h3>
-            <p class="value">0</p> </div>
-        <div class="card">
-            <h3>Total de Funcionários</h3>
-            <p class="value">{{ funcionarios_total_count }}</p>
-        </div>
-        <div class="card success">
-            <h3>Empresas Ativas</h3>
-            <p class="value">{{ empresas_total_count }}</p>
-        </div>
-    </section>
+  <section class="kpi-cards">
+    <div class="card alert">
+      <h3>ASOs a Vencer (30 dias)</h3>
+      <p class="value">{{ asos_a_vencer_count }}</p>
+    </div>
+    <div class="card alert">
+      <h3>Treinamentos a Vencer (30 dias)</h3>
+      <p class="value">{{ treinamentos_vencendo }}</p>
+    </div>
+    <div class="card alert">
+      <h3>EPIs com CA a Vencer (30 dias)</h3>
+      <p class="value">{{ epis_ca_vencendo }}</p>
+    </div>
+    <div class="card">
+      <h3>Total de Colaboradores</h3>
+      <p class="value">{{ colaboradores_total }}</p>
+    </div>
+    <div class="card success">
+      <h3>Empresas Ativas</h3>
+      <p class="value">{{ empresas_total_count }}</p>
+    </div>
+    <div class="card danger">
+      <h3>Incidentes (30 dias)</h3>
+      <p class="value">{{ incidentes_30d }}</p>
+    </div>
+    <div class="card alert">
+      <h3>Inspeções Abertas</h3>
+      <p class="value">{{ inspecoes_pendentes }}</p>
+    </div>
+    <div class="card">
+      <h3>Mapas de Exposição</h3>
+      <p class="value">{{ mapas_exposicao }}</p>
+    </div>
+    <div class="card">
+      <h3>Notificações Não Lidas</h3>
+      <p class="value">{{ notificacoes_nao_lidas }}</p>
+    </div>
+  </section>
 
-    <section class="dashboard-widgets">
-        <div class="widget">
-            <h2>Taxa de Acidentes (Últimos 6 meses)</h2>
-            <div class="chart-placeholder">
-                [ Área reservada para o gráfico ]
-            </div>
-        </div>
-        <div class="widget">
-            <h2>Documentos a Vencer</h2>
-            <ul>
-                <li><span>PGR</span> <span class="status pending">Em breve</span></li>
-                <li><span>PCMSO</span> <span class="status pending">Em breve</span></li>
-            </ul>
-        </div>
-    </section>
+  <section class="dashboard-widgets">
+    <div class="widget">
+      <h2>Taxa de Acidentes (últimos 6 meses)</h2>
+      <div class="chart-placeholder">[ Área reservada para o gráfico ]</div>
+    </div>
+    <div class="widget">
+      <h2>Documentos a Vencer</h2>
+      <ul>
+        <li><span>PGR</span> <span class="status pending">Em breve</span></li>
+        <li><span>PCMSO</span> <span class="status pending">Em breve</span></li>
+        <li><span>Treinamentos (30d)</span> <span class="status pending">{{ treinamentos_vencendo }}</span></li>
+        <li><span>EPIs com CA (30d)</span> <span class="status pending">{{ epis_ca_vencendo }}</span></li>
+      </ul>
+    </div>
+  </section>
 {% endblock %}
+

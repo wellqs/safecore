@@ -3,3 +3,7 @@ django==4.2.7
 
 # PostgreSQL Driver
 psycopg2-binary==2.9.9
+
+# Uploads de imagens/arquivos
+Pillow==10.4.0
+reportlab==3.6.13
